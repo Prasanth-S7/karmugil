@@ -10,6 +10,7 @@ import cors from 'cors';
 import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client';
 import mongoose from 'mongoose';
+import { User } from './models/rainfall.js';
 dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET;
 const app = express()
@@ -22,16 +23,46 @@ app.use('/camp', camp)
 app.get('/api/v1/dashboard', auth, (req, res) => {
   res.json({ msg: "welcome to the dashboard" })
 })
-const connectToDB = (async ()=>{
-  try{
-    const connection = await mongoose.connect("mongodb+srv://sai:sai123Sai@cluster0.qcpd6.mongodb.net/Soonuvasan");
+const connectToDB = (async () => {
+  try {
+    const connection = await mongoose.connect("mongodb+srv://sai:sai123Sai@cluster0.qcpd6.mongodb.net/Soonu");
     console.log("db connected successfully")
   }
-  catch(error){
+  catch (error) {
     console.log("error happened while connecting to db")
   }
 })
 connectToDB();
+
+app.get('/getrainfalldetails', async (req, res) => {
+  try {
+    const details = await User.find({});
+    res.json(details);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching data' });
+  }
+});
+
+app.get('/fetchfloodper', async (req, res) => {
+  const name = req.query.name;
+  try {
+    if (name === "Chennai Nungambakkam") {
+      res.json({ message: "Specific handling for Chennai Nungambakkam" });
+    } else {
+      const details = await User.findOne({ Station: name });
+      if (details) {
+        res.json(details);
+      } else {
+        res.status(404).json({ message: 'No data found for the provided station name' });
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'An error occurred while fetching data' });
+  }
+}
+);
 
 app.get('/getmapdetails', async (req, res) => {
   let config = {
