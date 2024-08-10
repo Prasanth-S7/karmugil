@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Inventory {
+  id                   Int               @id @default(autoincrement())
+  inventoryName        String
+  inventoryAddress     String
+  authorityIncharge    AuthorityIncharge
+  inventoryManager     String
+  Manageraddress       String
+  setUpInventoryAccess Boolean           @default(false)
+  contact              String
+  mailId               String
+  goods                Good[]
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  password             String
+}
+
+model Good {
+  id          Int       @id @default(autoincrement())
+  name        String
+  type        String
+  quantity    Int
+  inventoryId Int
+  campId      Int?
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Camp        Camp?     @relation(fields: [campId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  contact   String
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Camp {
+  id              Int      @id @default(autoincrement())
+  name            String
+  latitude        String
+  longitude       String
+  totalCapacity   Int
+  currentCapacity Int
+  address         String
+  TotalGoods      Int?
+  Status          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  Good            Good[]
+}
+
+enum AuthorityIncharge {
+  GOVT
+  NGO
+  PRIVATE
+}
+
+model campRequests{
+  id Int @id @default(autoincrement())
+  campName String
+  requiredAmount Int
+  status Boolean @default(false)
+}
+
+model CampGoodRequests{
+  id Int @id @default(autoincrement())
+  campName String
+  goodsNeeded String
+  quantity Int
+  status Boolean @default(false)
+}
+
+model DonationsFromPublic{
+  id Int @id @default(autoincrement())
+  name String
+  goodsNeeded String
+  quantity Int
+  status Boolean @default(false)
+}
