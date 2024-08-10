@@ -2,51 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Circle, Popup, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 
 const center = [13.0827, 80.2707];
 const coastalPoint = [13.0827, 80.2707];
 
 const floodData = [
-  { lat: 13.001177, lng: 80.256493, name: 'Adyar', rainfall: 4.3, hour: 6 },
-  { lat: 12.999830, lng: 80.194832, name: 'Alandur', rainfall: 32.8, hour: 8 },
-  { lat: 13.114317, lng: 80.148056, name: 'Ambathur', rainfall: 1.2, hour: 3 },
-  { lat: 13.114317, lng: 80.148056, name: 'Ambattur', rainfall: 29.1, hour: 5 },
-  { lat: 13.089136, lng: 80.209564, name: 'Anna Nagar', rainfall: 37.4, hour: 9 },
-  { lat: 13.010330, lng: 80.231812, name: 'Anna University', rainfall: 24.6, hour: 7 },
-  { lat: 13.012640, lng: 80.226900, name: 'Ayanavaram Taluk Office', rainfall: 19.3, hour: 2 },
+  { lat: 13.001177, lng: 80.256493, name: 'Adyar' },
+  { lat: 12.999830, lng: 80.194832, name: 'Alandur' },
+  { lat: 13.114317, lng: 80.148056, name: 'Ambathur' },
+  { lat: 13.114317, lng: 80.148056, name: 'Ambattur' },
+  { lat: 13.089136, lng: 80.209564, name: 'Anna Nagar' },
+  { lat: 13.010330, lng: 80.231812, name: 'Anna university' },
+  { lat: 13.012640, lng: 80.226900, name: 'Ayanavaram taluk office' },
   // { lat: 41.119850, lng: 0.411370, name: 'CD Hospital Tondiarpet', rainfall: 48.2, hour: 10 },
-  { lat: 13.023130, lng: 80.278470, name: 'Chennai AP', rainfall: 0.4, hour: 4 },
-  { lat: 13.071510, lng: 80.222250, name: 'Chennai Collectorate Building', rainfall: 15.7, hour: 11 },
-  { lat: 13.054410, lng: 80.248322, name: 'Chennai Nungambakkam', rainfall: 40.9, hour: 13 },
-  { lat: 13.071260, lng: 80.285316, name: 'Chennai Port Trust', rainfall: 26.5, hour: 6 },
+  { lat: 13.023130, lng: 80.278470, name: 'Chennai AP' },
+  { lat: 13.071510, lng: 80.222250, name: 'Chennai collectorate building' },
+  { lat: 13.054410, lng: 80.248322, name: 'Chennai nungambakkam' },
+  { lat: 13.071260, lng: 80.285316, name: 'Chennai port trust' },
   // { lat: 47.671340, lng: -64.950360, name: 'DGP Office', rainfall: 49.7, hour: 14 },
-  { lat: 29.158070, lng: 75.755020, name: 'Gov HR Sec School MGR Nagar', rainfall: 22.3, hour: 12 },
-  { lat: 14.748960, lng: 78.545330, name: 'Govt. Arts College', rainfall: 31.2, hour: 15 },
-  { lat: 11.218460, lng: 79.615410, name: 'Kodambakkam', rainfall: 14.1, hour: 9 },
-  { lat: 13.022859, lng: 80.252249, name: 'MYLAPORE-TRIPLICANE TALUK', rainfall: 1.6, hour: 8 },
-  { lat: 13.147819, lng: 80.230988, name: 'Madhavaram', rainfall: 3.2, hour: 5 },
-  { lat: 32.239632, lng: 77.188713, name: 'Manali', rainfall: 47.6, hour: 16 },
-  { lat: 13.073780, lng: 80.235500, name: 'Pachaiyappa College', rainfall: 33.3, hour: 7 },
-  { lat: 13.107820, lng: 80.211460, name: 'Perambur Corporation Park', rainfall: 25.1, hour: 6 },
-  { lat: 12.965365, lng: 80.246109, name: 'Perungudi', rainfall: 18.4, hour: 3 },
-  { lat: 13.088960, lng: 80.258620, name: 'Purasawalkam - Perambur', rainfall: 21.7, hour: 8 },
-  { lat: 13.170190, lng: 80.206734, name: 'Puzhal', rainfall: 23.5, hour: 4 },
-  { lat: 13.107280, lng: 80.292953, name: 'Royapuram', rainfall: 26.2, hour: 5 },
-  { lat: 12.900988, lng: 80.227928, name: 'Sholinganallur', rainfall: 19.8, hour: 9 },
-  { lat: 13.041456, lng: 80.252014, name: 'Teynampet', rainfall: 28.1, hour: 12 },
-  { lat: 10.810090, lng: 78.676890, name: 'Thiru-Vi-Ka Nagar', rainfall: 35.6, hour: 11 },
-  { lat: 13.122590, lng: 80.286308, name: 'Thiruvottiyur', rainfall: 39.3, hour: 13 },
-  { lat: 13.132290, lng: 80.286682, name: 'Tondairpet', rainfall: 45.0, hour: 14 },
-  { lat: 13.048472, lng: 80.177490, name: 'Valasaravakkam', rainfall: 5.7, hour: 6 },
+  { lat: 29.158070, lng: 75.755020, name: 'Gov hr sec school MGR Nagar' },
+  { lat: 14.748960, lng: 78.545330, name: 'Govt. arts college' },
+  { lat: 11.218460, lng: 79.615410, name: 'Kodambakkam' },
+  { lat: 13.022859, lng: 80.252249, name: 'MYLAPORE-TRIPLICANE TALUK' },
+  { lat: 13.147819, lng: 80.230988, name: 'Madhavaram' },
+  { lat: 32.239632, lng: 77.188713, name: 'Manali' },
+  { lat: 13.073780, lng: 80.235500, name: 'Pachaiyappa college' },
+  { lat: 13.107820, lng: 80.211460, name: 'Perambur Corporation park' },
+  { lat: 12.965365, lng: 80.246109, name: 'Perungudi' },
+  { lat: 13.088960, lng: 80.258620, name: 'Purasawalkam - Perambur' },
+  { lat: 13.170190, lng: 80.206734, name: 'Puzhal' },
+  { lat: 13.107280, lng: 80.292953, name: 'Royapuram' },
+  { lat: 12.900988, lng: 80.227928, name: 'Sholinganallur' },
+  { lat: 13.041456, lng: 80.252014, name: 'Teynampet' },
+  { lat: 10.810090, lng: 78.676890, name: 'Thiru-Vi-Ka Nagar' },
+  { lat: 13.122590, lng: 80.286308, name: 'Thiruvottiyur' },
+  { lat: 13.132290, lng: 80.286682, name: 'Tondairpet' },
+  { lat: 13.048472, lng: 80.177490, name: 'Valasaravakkam' },
 ];
 
-// Function to check proximity to the coast
 const isNearCoast = (lat, lng) => {
   const coastalDistance = L.latLng(lat, lng).distanceTo(coastalPoint);
   return coastalDistance < 10000; // 10 km
 };
 
-// Function to get elevation
 const getElevation = async (lat, lng) => {
   const response = await fetch(`https://api.open-meteo.com/v1/elevation?latitude=${lat}&longitude=${lng}`);
   const data = await response.json();
@@ -59,7 +58,6 @@ const analyzeFloodRisk = async (lat, lng, rainfall, hour, name) => {
   const thresholds = getThresholdsForLocation(name);
   const rainfallThreshold = thresholds[hour] || 0;
 
-  console.log(rainfall + " " + rainfallThreshold + " " + hour)
 
   const riskDetails = {
     location: name,
@@ -67,14 +65,13 @@ const analyzeFloodRisk = async (lat, lng, rainfall, hour, name) => {
     threshold: rainfallThreshold,
     coastalRisk: coastalRisk,
     elevation: elevation[0],
-    elevationThreshold: 5, // need to be adjusted
+    elevationThreshold: 5, 
     riskAssessment: rainfall > rainfallThreshold
   };
 
   return riskDetails;
 };
 
-// Define thresholds for locations
 const rainfallThresholdsAdyarBesantNagarMylapore = {
   1: 0.4,
   2: 1.5,
@@ -178,25 +175,69 @@ const MapUpdater = ({ location, zoom }) => {
 };
 
 const MapComponent = () => {
+  const [rain, setRain] = useState([])
+  const [floodper, setfloodper] = useState([])
   const [floodRisks, setFloodRisks] = useState([]);
-
+  const [rainDetails, setRainDetails] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(center);
   const [zoom, setZoom] = useState(12);
   const str = JSON.stringify(floodRisks);
-  console.log(str+ "Naa tha varen")
+  const fetchFloodRisks = async () => {
+    const risks = await Promise.all(
+      floodData.map(async ({ lat, lng, rainfall, hour, name }) => {
+        const risk = await analyzeFloodRisk(lat, lng, rainfall, hour, name);
+        return { lat, lng, rainfall, risk, name };
+      })
+    );
+    setFloodRisks(risks);
+  };
   useEffect(() => {
-    const fetchFloodRisks = async () => {
-      const risks = await Promise.all(
-        floodData.map(async ({ lat, lng, rainfall, hour, name }) => {
-          const risk = await analyzeFloodRisk(lat, lng, rainfall, hour, name);
-          console.log(JSON.stringify(risk))
-          return { lat, lng, rainfall, risk, name };
-        })
-      );
-      setFloodRisks(risks);
-    };
+    const fetchFloodPer = (async () => {
+      floodData.forEach(async (one) => {
+        const res = await axios.get(`http://localhost:3000/fetchfloodper?name=${one.name}`);
+        // console.log(res.data);
+        let color = "red";
+        const dummy = res.data.Rainfall;
+        if (dummy < 30) {
+          color = "green";
+        }
+        else if (dummy < 75) {
+          color = "yellow";
+        }
+        else if (dummy < 150) {
+          color = "orange";
+        }
+        one["color"] = color;
+        one["Rainfall"] = res.data.Rainfall;
+        const elevation = await getElevation(one.lat, one.lng);
+        one["elevation"] = elevation[0];
+        const coastalRisk = isNearCoast(one.lat, one.lng);
+        one["coastalRisk"] = coastalRisk
+        one["elevationThreshold"] = 5;
+        // console.log(one.color);
+      })
+      setRain(floodData)
+      console.log(floodData)
+    })
+    fetchFloodPer();
+  }, [])
+  const fetchRainDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/getrainfalldetails');
+      // console.log(response.data);
+      setRainDetails(response.data);
+    } catch (error) {
+      console.error('Error fetching rain details:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchFloodRisks();
+    fetchRainDetails();
+    const intervalId = setInterval(() => {
+      fetchRainDetails();
+    }, 3600000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleLocationChange = (event) => {
@@ -204,7 +245,7 @@ const MapComponent = () => {
     const location = floodData.find(data => data.name === selectedName);
     if (location) {
       setSelectedLocation([location.lat, location.lng]);
-      setZoom(15); // Zoom in when a location is selected
+      setZoom(15);
     }
   };
 
@@ -222,28 +263,39 @@ const MapComponent = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {floodRisks.map(({ lat, lng, rainfall, risk }, index) => (
+        {rain.map(({ color, lat, lng, Rainfall, coastalRisk, elevation, elevationThreshold }, index) => {
+          console.log(color);
+          const rainfall = Number(Rainfall);
+          let co, riskAssessment
 
-          <><Circle
-            key={index}
-            center={[lat, lng]}
-            radius={200}
-            color={risk.riskAssessment ? 'red' : 'green'}
-            fillColor={risk.riskAssessment ? 'red' : 'green'}
-            fillOpacity={0.5}
-          >
-            <Popup>
-              Rainfall: {rainfall} cm<br />
-              Threshold: {risk.threshold} cm<br />
-              Coastal Risk: {risk.coastalRisk ? 'Yes' : 'No'}<br />
-              Elevation: {risk.elevation} m<br />
-              Elevation Threshold: {risk.elevationThreshold} m<br />
-              Risk Assessment: {risk.riskAssessment ? 'High' : 'Low'}
+          if (rainfall < 30) {
+            co = "green";
+            riskAssessment = "Low";
+          } else if (rainfall < 75) {
+            co = "yellow";
+            riskAssessment = "Moderate";
+          }
 
-            </Popup>
-          </Circle>
-          </>
-        ))}
+          return (
+            <Circle
+              key={index}
+              center={[lat, lng]}
+              radius={200}
+              color="blue"
+              fillColor="blue"
+              fillOpacity={0.5}
+            >
+              <Popup>
+                Rainfall: {rainfall} cm<br />
+                Coastal Risk: {coastalRisk ? 'Yes' : 'No'}<br />
+                Elevation: {elevation} m<br />
+                Elevation Threshold: {elevationThreshold} m<br />
+                Risk Assessment: {riskAssessment}
+              </Popup>
+            </Circle>
+          );
+        })}
+
         {floodData.map(({ lat, lng, name }, index) => (
           <Marker key={index} position={[lat, lng]}>
             <Popup>{name}</Popup>
