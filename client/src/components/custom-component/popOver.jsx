@@ -22,7 +22,7 @@ export function PopoverDemo() {
                             }`}
 
                     >
-                        PDRS
+                        Flood Navigator
                     </a>
                     <a
                         href="/floodhub"
@@ -30,7 +30,7 @@ export function PopoverDemo() {
                             }`}
 
                     >
-                        Disaster Navigator
+                        Graph
                     </a>
                 </div>
             </PopoverContent>

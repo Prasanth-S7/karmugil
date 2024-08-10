@@ -32,7 +32,7 @@ export function Dashboard({ screenTitle, children }) {
                 <div className="flex h-full max-h-screen flex-col gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <a href="/" className="flex items-center gap-2 font-semibold">
-                            <span className="">Forus</span>
+                            <span className="">Karmugil</span>
                         </a>
                         <Button variant="outline" size="icon" onClick={toggleTheme} className="ml-auto h-8 w-8">
                             <MdDarkMode />
@@ -60,22 +60,6 @@ export function Dashboard({ screenTitle, children }) {
                                     }`}
                             >
                                 Tracking
-                            </a>
-                            <a
-                                href="/moneymanager"
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${isActive('/moneymanager') ? 'bg-muted text-primary' : 'text-muted-foreground hover:text-primary'
-                                    }`}
-
-                            >
-                                MoneyManager
-                            </a>
-                            <a
-                                href="/vendors"
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${isActive('/vendors') ? 'bg-muted text-primary' : 'text-muted-foreground hover:text-primary'
-                                    }`}
-
-                            >
-                                Vendors
                             </a>
                             <PopoverDemo></PopoverDemo>
                             <a
