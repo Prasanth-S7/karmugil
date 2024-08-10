@@ -9,6 +9,7 @@ import { auth } from './middlewares/auth.js';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client';
+import mongoose from 'mongoose';
 dotenv.config();
 export const JWT_SECRET = process.env.JWT_SECRET;
 const app = express()
@@ -21,6 +22,16 @@ app.use('/camp', camp)
 app.get('/api/v1/dashboard', auth, (req, res) => {
   res.json({ msg: "welcome to the dashboard" })
 })
+const connectToDB = (async ()=>{
+  try{
+    const connection = await mongoose.connect("mongodb+srv://sai:sai123Sai@cluster0.qcpd6.mongodb.net/Soonuvasan");
+    console.log("db connected successfully")
+  }
+  catch(error){
+    console.log("error happened while connecting to db")
+  }
+})
+connectToDB();
 
 app.get('/getmapdetails', async (req, res) => {
   let config = {
