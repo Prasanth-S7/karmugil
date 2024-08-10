@@ -22,7 +22,7 @@ export function PopoverDemo() {
                             }`}
 
                     >
-                        Flood Navigator
+                        Graph
                     </a>
                     <a
                         href="/floodhub"
@@ -30,7 +30,7 @@ export function PopoverDemo() {
                             }`}
 
                     >
-                        Graph
+                        Flood Navigator
                     </a>
                 </div>
             </PopoverContent>
