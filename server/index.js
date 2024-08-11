@@ -44,6 +44,16 @@ app.get('/getrainfalldetails', async (req, res) => {
   }
 });
 
+app.post('/getgraphdetails',(req,res)=>{
+  const date = req.body['date'];
+  const area = req.body['area'];
+  let rain;
+  console.log(date + area); 
+  User.find({'Date':`${date}`+"T00:00:00" , 'Station' : `${area}`}).then(users => {
+      if(!users){res.status(400).send("")}else{res.status(200).json({"data":users})}}).catch(error=>{res.status(400).send("")});
+ 
+})
+
 app.get('/fetchfloodper', async (req, res) => {
   const name = req.query.name;
   try {
@@ -95,6 +105,9 @@ app.get('/getmapdetails', async (req, res) => {
       console.log(error);
     })
 });
+
+
+
 
 const prisma = new PrismaClient()
 const PORT = process.env.PORT || 3000;

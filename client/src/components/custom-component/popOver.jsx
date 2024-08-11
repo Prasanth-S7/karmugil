@@ -17,7 +17,7 @@ export function PopoverDemo() {
             <PopoverContent className="w-[250px] text-sm font-semibold">
                 <div className="flex flex-col ">
                     <a
-                        href="/pdrs"
+                        href="/graph"
                         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${isActive('/pdrs') ? 'bg-muted text-primary' : 'text-muted-foreground hover:text-primary'
                             }`}
 

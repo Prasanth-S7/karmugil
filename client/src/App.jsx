@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider } from './components/custom-component/themeContext';
 import { Home } from './screens/Home';
 import { Tracking } from './screens/Tracking';
+import { Graph } from './screens/Graph';
 import { Transport } from './screens/Transport';
 import { Login } from './screens/Login';
 import { Toaster } from "@/components/ui/toaster"
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/floodhub" element={<Floodhub />}></Route>
           <Route path="/settings" element={<Settings />}></Route>
+          <Route path='/graph' element={<Graph />}></Route>
         </Routes>
       </BrowserRouter>
       <Toaster />
